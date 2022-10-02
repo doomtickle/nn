@@ -3,7 +3,7 @@ package perceptron
 import "github.com/doomtickle/nn/rand"
 
 const (
-	lr = 0.1
+	lr = 0.01
 )
 
 type Perceptron struct {
