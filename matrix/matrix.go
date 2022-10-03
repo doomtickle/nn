@@ -90,3 +90,15 @@ func (m *Matrix) MultMatrix(n *Matrix) *Matrix {
 
   return res
 }
+
+func (m *Matrix) Transpose() *Matrix {
+  res := NewMatrix(m.Cols, m.Rows)
+
+  for i:=0;i<m.Rows;i++{
+    for j:=0;j<m.Cols; j++ {
+      res.Arr[j][i] = m.Arr[i][j]
+    }
+  }
+
+  return res
+}

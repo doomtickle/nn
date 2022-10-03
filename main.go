@@ -29,6 +29,9 @@ func main() {
 
   mat3 := mat1.MultMatrix(mat2)
   fmt.Printf("%+v\n", mat3)
+
+  mat4 := mat2.Transpose()
+  fmt.Printf("%+v\n", mat4)
 }
 
 func simple() {
