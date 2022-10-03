@@ -9,3 +9,7 @@ func RandFloats(min, max float64, n int) []float64 {
 	}
 	return res
 }
+
+func RandInt(n int) int {
+  return rand.Intn(n)
+}
