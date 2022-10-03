@@ -32,6 +32,12 @@ func main() {
 
   mat4 := mat2.Transpose()
   fmt.Printf("%+v\n", mat4)
+
+  mat1.Map(func(n float64) float64 {
+    return n+1
+  })
+
+  fmt.Printf("%+v\n", mat1)
 }
 
 func simple() {

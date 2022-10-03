@@ -102,3 +102,11 @@ func (m *Matrix) Transpose() *Matrix {
 
   return res
 }
+type MapFunc func(float64) float64
+func (m *Matrix) Map(fn MapFunc) {
+	for i := 0; i < m.Rows; i++ {
+		for j := 0; j < m.Cols; j++ {
+			m.Arr[i][j] = fn(m.Arr[i][j])
+		}
+	}
+}
