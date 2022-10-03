@@ -63,10 +63,27 @@ func Sigmoid(x float64) float64 {
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	nn := NewNeuralNet(3, 3, 3)
-	in := []float64{1, 0, 0.5}
-	out := nn.FeedForward(in)
-	fmt.Printf("%v", out)
+	nn := NewNeuralNet(2, 2, 1)
+	in := []float64{1, 0}
+  targets := []float64{1}
+
+  err := nn.Train(in, targets)
+  fmt.Printf("%v", err)
+
+	// out := nn.FeedForward(in)
+	// fmt.Printf("%v", targets)
+}
+
+func (nn *NeuralNetwork) Train(inputs, targets []float64) []float64 {
+  outputs := matrix.FromArray(nn.FeedForward(inputs))
+  ys := matrix.FromArray(targets)
+
+  // Calculate Error
+  outputErr := matrix.Subtract(ys, outputs)
+  who_t := matrix.Transpose(nn.WeightsHO)
+  hiddenErr := matrix.Multiply(who_t, outputErr) 
+
+  return hiddenErr.ToArray()
 }
 
 func simple() {

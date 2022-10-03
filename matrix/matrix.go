@@ -62,6 +62,25 @@ func (m *Matrix) AddMatrix(n *Matrix) {
 	}
 }
 
+func (m *Matrix) SubtractMatrix(n *Matrix) {
+	for i := 0; i < m.Rows; i++ {
+		for j := 0; j < m.Cols; j++ {
+			m.Arr[i][j] -= n.Arr[i][j]
+		}
+	}
+}
+
+func Subtract(a, b *Matrix) *Matrix {
+  res := NewMatrix(a.Rows, a.Cols)
+	for i := 0; i < a.Rows; i++ {
+		for j := 0; j < a.Cols; j++ {
+			res.Arr[i][j] = a.Arr[i][j] - b.Arr[i][j]
+		}
+	}
+
+  return res
+}
+
 func (m *Matrix) MultMatrixByElement(n *Matrix) {
 	for i := 0; i < m.Rows; i++ {
 		for j := 0; j < m.Cols; j++ {
@@ -91,7 +110,7 @@ func (m *Matrix) MultMatrix(n *Matrix) *Matrix {
 	return res
 }
 
-func (m *Matrix) Transpose() *Matrix {
+func Transpose(m *Matrix) *Matrix {
 	res := NewMatrix(m.Cols, m.Rows)
 
 	for i := 0; i < m.Rows; i++ {
