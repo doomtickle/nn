@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"time"
 
@@ -14,30 +15,58 @@ type NeuralNetwork struct {
 	InputNodes,
 	HiddenNodes,
 	OutputNodes int
+
+	WeightsIH,
+	WeightsHO,
+	BiasH,
+	BiasO *matrix.Matrix
 }
 
+func NewNeuralNet(inputs, neurons, outputs int) *NeuralNetwork {
+	var nn NeuralNetwork
+
+	nn.InputNodes = inputs
+	nn.HiddenNodes = neurons
+	nn.OutputNodes = outputs
+
+	nn.WeightsIH = matrix.NewMatrix(nn.HiddenNodes, nn.InputNodes)
+	nn.WeightsHO = matrix.NewMatrix(nn.OutputNodes, nn.HiddenNodes)
+
+	nn.WeightsIH.Randomize()
+	nn.WeightsHO.Randomize()
+
+	nn.BiasH = matrix.NewMatrix(nn.InputNodes, 1)
+	nn.BiasO = matrix.NewMatrix(nn.HiddenNodes, 1)
+
+	nn.BiasH.Randomize()
+	nn.BiasO.Randomize()
+
+	return &nn
+}
+
+func (nn *NeuralNetwork) FeedForward(in []float64) []float64 {
+	inputs := matrix.FromArray(in)
+	hidden := matrix.Multiply(nn.WeightsIH, inputs)
+	hidden.AddMatrix(nn.BiasH)
+	hidden.Map(Sigmoid)
+
+	op := matrix.Multiply(nn.WeightsHO, hidden)
+	op.AddMatrix(nn.BiasO)
+	op.Map(Sigmoid)
+
+	return op.ToArray()
+}
+
+func Sigmoid(x float64) float64 {
+	return 1 / (1 + math.Exp(-x))
+}
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-  mat1 := matrix.NewMatrix(2,3)
-  mat1.Randomize()
-	fmt.Printf("%+v\n", mat1)
-
-  mat2 := matrix.NewMatrix(3,2)
-  mat2.Randomize()
-  fmt.Printf("%+v\n", mat2)
-
-  mat3 := mat1.MultMatrix(mat2)
-  fmt.Printf("%+v\n", mat3)
-
-  mat4 := mat2.Transpose()
-  fmt.Printf("%+v\n", mat4)
-
-  mat1.Map(func(n float64) float64 {
-    return n+1
-  })
-
-  fmt.Printf("%+v\n", mat1)
+	nn := NewNeuralNet(3, 3, 3)
+	in := []float64{1, 0, 0.5}
+	out := nn.FeedForward(in)
+	fmt.Printf("%v", out)
 }
 
 func simple() {
