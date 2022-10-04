@@ -124,6 +124,21 @@ func Transpose(m *Matrix) *Matrix {
 
 type MapFunc func(float64) float64
 
+func StaticMap(m *Matrix, fn MapFunc) *Matrix {
+  result := NewMatrix(m.Rows, m.Cols)
+  a := make([][]float64, m.Rows)
+	for i := 0; i < m.Rows; i++ {
+    a[i] = make([]float64, m.Cols)
+		for j := 0; j < m.Cols; j++ {
+			a[i][j] = fn(m.Arr[i][j])
+		}
+	}
+
+  result.Arr = a
+
+  return result
+}
+
 func (m *Matrix) Map(fn MapFunc) {
 	for i := 0; i < m.Rows; i++ {
 		for j := 0; j < m.Cols; j++ {
